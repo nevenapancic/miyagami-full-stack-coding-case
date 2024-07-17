@@ -6,6 +6,18 @@
 .pnp.js
 .yarn/install-state.gz
 
+
+# Environment variables
+.env
+
+
+
+# Local development
+.cache/
+dist/
+public/
+
+
 # testing
 /coverage
 
