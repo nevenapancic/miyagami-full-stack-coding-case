@@ -1,10 +1,9 @@
-import next from "next";
-const { NextConfig } = next;
+// next.config.mjs
 
-/** @type {NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["live.staticflickr.com"],
+    domains: ["images.pexels.com"],
   },
 };
 
