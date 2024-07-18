@@ -4,6 +4,13 @@ import { fetchPublicFeed } from "@/app/api/route";
 import { searchImages } from "@/app/api/[tags]/route";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip";
 
 interface PexelsImage {
   id: number;
@@ -103,7 +110,7 @@ const HomePage = () => {
             onSubmit={handleSearch}
             className="flex w-full max-w-2xl mt-4 items-center space-x-2"
           >
-            <input
+            <Input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -116,23 +123,46 @@ const HomePage = () => {
           {error && <p className="text-red-500">{error}</p>}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {images.map((img) => (
-              <div key={img.id} className="card">
+              <div
+                key={img.id}
+                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+              >
                 <Image
                   src={img.src.large}
                   alt={img.photographer}
                   width={400}
                   height={400}
+                  className="rounded-t-lg"
                 />
-                {img.title && <p className="font-semibold">{img.title}</p>}
-                <p>
-                  <a
-                    href={img.photographer_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {img.photographer}
-                  </a>
-                </p>
+                {img.title && (
+                  <p className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    {img.title}
+                  </p>
+                )}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <a
+                        href={img.photographer_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                          {img.photographer}
+                        </p>
+                      </a>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <a
+                        href={img.photographer_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <p>Visit profile</p>
+                      </a>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             ))}
             <button onClick={handleLoadMore} disabled={loading}>
