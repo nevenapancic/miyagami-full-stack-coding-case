@@ -11,6 +11,7 @@ import {
   TooltipContent,
   TooltipProvider,
 } from "@/components/ui/tooltip";
+import ImageCard from "@/components/ImageCard";
 
 interface PexelsImage {
   id: number;
@@ -128,41 +129,14 @@ const HomePage = () => {
           </div>
           <div className="masonry mt-10 mb-20">
             {images.map((img) => (
-              <div className="group relative" key={img.id}>
-                <Image
-                  src={img.src.large}
-                  alt={img.photographer}
-                  width={400}
-                  height={400}
-                  className="rounded-lg"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <a
-                          href={img.photographer_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <p className="mb-3 font-normal text-white dark:text-white">
-                            {img.photographer}
-                          </p>
-                        </a>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <a
-                          href={img.photographer_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <p>Visit profile</p>
-                        </a>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </div>
+              <ImageCard
+                key={img.id}
+                id={img.id}
+                src={img.src}
+                photographer={img.photographer}
+                photographer_url={img.photographer_url}
+                title={img.title}
+              />
             ))}
           </div>
           <div className="flex justify-center">
