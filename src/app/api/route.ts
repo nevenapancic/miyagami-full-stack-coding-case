@@ -12,7 +12,7 @@ type FeedResponse = Promise<any>; // Replace 'any' with a more specific type bas
 function fetchPublicFeed(
   tag: string = "",
   page: number = 1,
-  perPage: number = 10,
+  perPage: number = 30,
   orderBy: string = "latest"
 ): FeedResponse {
   if (!process.env.NEXT_PUBLIC_PEXELS_API_KEY) {

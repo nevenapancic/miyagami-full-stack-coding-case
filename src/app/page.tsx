@@ -30,6 +30,7 @@ const HomePage = () => {
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
   const [searchMode, setSearchMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const randomTags = [
     "dog",
     "Amsterdam",
@@ -98,76 +99,76 @@ const HomePage = () => {
   return (
     <main className="h-screen w-full">
       <div className="container px-24">
-        <header className="flex items-center justify-between pt-10">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tighter mr-4">
-              The Miyagami Pexels Image Finder
-            </h1>
-          </div>
-        </header>
+        <div className="flex justify-center">
+          <h1 className="text-4xl font-bold tracking-tighter mt-20">
+            The Miyagami Pexels Image Finder
+          </h1>
+        </div>
         <div className="container mx-auto p-4">
-          <form
-            onSubmit={handleSearch}
-            className="flex w-full max-w-2xl mt-4 items-center space-x-2"
-          >
-            <Input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search images..."
-              className="rounded-lg shadow-lg grow py-2 pl-4"
-            />
-            <Button type="submit">Search</Button>
-          </form>
-          {loading && <p>Loading...</p>}
-          {error && <p className="text-red-500">{error}</p>}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="flex justify-center">
+            <form
+              onSubmit={handleSearch}
+              className="flex w-full max-w-2xl mt-4 items-center space-x-2"
+            >
+              <Input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search images..."
+                className="rounded-lg shadow-lg grow py-2 pl-4"
+              />
+              <Button type="submit">Search</Button>
+            </form>
+          </div>
+          <div className="flex justify-center mt-4 pt-4">
+            {loading && <p>Loading...</p>}
+          </div>
+          <div className="flex justify-center mt-4 pt-4">
+            {error && <p className="text-red-500">{error}</p>}
+          </div>
+          <div className="masonry mt-10 mb-20">
             {images.map((img) => (
-              <div
-                key={img.id}
-                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-              >
+              <div className="group relative" key={img.id}>
                 <Image
                   src={img.src.large}
                   alt={img.photographer}
                   width={400}
                   height={400}
-                  className="rounded-t-lg"
+                  className="rounded-lg"
                 />
-                {img.title && (
-                  <p className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    {img.title}
-                  </p>
-                )}
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <a
-                        href={img.photographer_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                          {img.photographer}
-                        </p>
-                      </a>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <a
-                        href={img.photographer_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <p>Visit profile</p>
-                      </a>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <a
+                          href={img.photographer_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <p className="mb-3 font-normal text-white dark:text-white">
+                            {img.photographer}
+                          </p>
+                        </a>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <a
+                          href={img.photographer_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <p>Visit profile</p>
+                        </a>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               </div>
             ))}
-            <button onClick={handleLoadMore} disabled={loading}>
+          </div>
+          <div className="flex justify-center">
+            <Button onClick={handleLoadMore} disabled={loading}>
               {loading ? "Loading..." : "Load More"}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

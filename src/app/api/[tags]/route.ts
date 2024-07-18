@@ -15,7 +15,7 @@ type ImageSearchResponse = Promise<any>; // Replace 'any' with a more specific t
 function searchImages(
   query: string,
   page: number = 1,
-  perPage: number = 10,
+  perPage: number = 30,
   orderBy: string = "latest"
 ): ImageSearchResponse {
   if (!API_KEY) {
