@@ -98,7 +98,7 @@ const HomePage = () => {
 
   return (
     <main className="h-screen w-full">
-      <div className="container px-24">
+      <div className="container px-10 sm:px-24">
         <div className="flex justify-center">
           <h1 className="text-4xl font-bold tracking-tighter mt-20">
             The Miyagami Pexels Image Finder

@@ -2,7 +2,7 @@
 const config = {
   plugins: {
     tailwindcss: {},
-    "@tailwindcss/aspect-ratio": {},
+    // "@tailwindcss/aspect-ratio": {},
   },
 };
 
