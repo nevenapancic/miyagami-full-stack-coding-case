@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { fetchPublicFeed } from "@/app/api/route";
-import { searchImages } from "@/app/api/[tags]/route";
+// import { fetchPublicFeed } from "@/app/api/route";
+// import { searchImages } from "@/app/api/[query]/route";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ImageCard from "@/components/ImageCard";
@@ -24,7 +24,7 @@ const HomePage = () => {
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
   const [searchMode, setSearchMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const randomTags = [
     "dog",
     "Amsterdam",
@@ -49,7 +49,14 @@ const HomePage = () => {
     setLoading(true);
     const randomTag = getRandomTag();
     try {
-      const data = await fetchPublicFeed(randomTag, newPage);
+      const API_URL = `/api/?tag=${randomTag}&page=${newPage}&`;
+      const response = await fetch(API_URL);
+      if (!response.ok) {
+        setError("Failed to load images.");
+        throw new Error(`API call failed with status: ${response.status}`);
+      }
+      const data = await response.json();
+
       if (newPage === 1) {
         setImages(data.photos);
       } else {
@@ -57,6 +64,7 @@ const HomePage = () => {
       }
     } catch (error) {
       console.error("Failed to load images:", error);
+      setError("Failed to load images.");
     } finally {
       setLoading(false);
     }
@@ -67,23 +75,26 @@ const HomePage = () => {
   };
 
   const handleSearch = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault(); // Prevent form submission, good for single page applications to prevent reloading of the page
+    if (e) e.preventDefault();
     if (!searchTerm.trim()) {
-      // Validation of the input field
-      setError("You have to write a tag for which I should search for images.");
-      return; // in case it is a white space function puts an error message
+      setError("Please enter a search term");
+      return;
     }
-    setLoading(true); // To show the user that the search is in progress
+    setLoading(true);
     setError("");
     setSearchMode(true);
-    if (e) setPage(1); // Reset the page number to 1 if it is a new search, ensuring that the new search starts from the first page of results
+    if (e) setPage(1);
     try {
-      const data = await searchImages(searchTerm, e ? 1 : page); // Sending a request to the API to fetch images with certain term
+      const API_URL = `/api/${searchTerm}?page=${e ? 1 : page}&`;
+      const response = await fetch(API_URL);
+      if (!response.ok) {
+        throw new Error(`API call failed with status: ${response.status}`);
+      }
+      const data = await response.json();
+
       if (page === 1) {
-        // if the search is for the first page
-        setImages(data.photos); // set the Images state to the fetched data
+        setImages(data.photos);
       } else {
-        // if not it appends new images to the existing ones
         setImages((prevImages) => [...prevImages, ...data.photos]);
       }
     } catch (err) {
