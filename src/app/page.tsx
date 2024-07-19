@@ -2,15 +2,8 @@
 import { useState, useEffect } from "react";
 import { fetchPublicFeed } from "@/app/api/route";
 import { searchImages } from "@/app/api/[tags]/route";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-  TooltipProvider,
-} from "@/components/ui/tooltip";
 import ImageCard from "@/components/ImageCard";
 
 interface PexelsImage {
@@ -74,20 +67,23 @@ const HomePage = () => {
   };
 
   const handleSearch = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
+    if (e) e.preventDefault(); // Prevent form submission, good for single page applications to prevent reloading of the page
     if (!searchTerm.trim()) {
+      // Validation of the input field
       setError("You have to write a tag for which I should search for images.");
-      return;
+      return; // in case it is a white space function puts an error message
     }
-    setLoading(true);
+    setLoading(true); // To show the user that the search is in progress
     setError("");
     setSearchMode(true);
-    if (e) setPage(1);
+    if (e) setPage(1); // Reset the page number to 1 if it is a new search, ensuring that the new search starts from the first page of results
     try {
-      const data = await searchImages(searchTerm, e ? 1 : page);
+      const data = await searchImages(searchTerm, e ? 1 : page); // Sending a request to the API to fetch images with certain term
       if (page === 1) {
-        setImages(data.photos);
+        // if the search is for the first page
+        setImages(data.photos); // set the Images state to the fetched data
       } else {
+        // if not it appends new images to the existing ones
         setImages((prevImages) => [...prevImages, ...data.photos]);
       }
     } catch (err) {

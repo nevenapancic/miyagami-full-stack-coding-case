@@ -1,4 +1,4 @@
-type FeedResponse = Promise<any>; // Replace 'any' with a more specific type based on the API response structure
+type FeedResponse = Promise<any>;
 
 /**
  * Fetches the public feed from Pexels API with pagination and optional ordering.

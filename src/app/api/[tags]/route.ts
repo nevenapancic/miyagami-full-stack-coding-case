@@ -1,8 +1,7 @@
 const API_KEY = process.env.NEXT_PUBLIC_PEXELS_API_KEY;
 const BASE_URL = "https://api.pexels.com/v1";
 
-type ImageSearchResponse = Promise<any>; // Replace 'any' with a more specific type based on the API response structure
-
+type ImageSearchResponse = Promise<any>;
 /**
  * Searches images on Pexels API with added orderBy parameter for sorting.
  * Note: The response includes fields such as 'photographer_url' and 'title'.
